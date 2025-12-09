@@ -1,0 +1,8 @@
+{
+  "status": "revoked",
+  "reason": "The proof has been revoked due to security concerns.",
+  "claims": {
+    "iss": "https://trustid.example",
+    "sub": "subject-487faa"
+  }
+}
