@@ -2,7 +2,7 @@
 
 **Author:** Vojtěch Sejkora  
 **Status:** Experimental Open Standard  
-**Current Specification:** Draft 0.1  
+**Current Specification:** VPAT 1.0 Draft  
 **License:** Apache License 2.0  
 
 ---
@@ -33,6 +33,24 @@ TrustID is designed to strengthen digital trust while preserving individual priv
 
 ---
 
+# 📄 Abbreviations
+
+| Abbreviation | Meaning |
+|--------------|---------|
+| VPAT | Verified Person & Age Token |
+| IdP | Identity Provider |
+| RP | Relying Party |
+| JWT | JSON Web Token |
+| JWKS | JSON Web Key Set |
+| JOSE | JSON Object Signing & Encryption |
+| KID | Key Identifier |
+| JTI | Token Identifier |
+| LOA | Level of Assurance |
+| eIDAS | EU Digital Identity Framework |
+| PII | Personally Identifiable Information |
+| HSM | Hardware Security Module |
+
+---
 # 🎯 Purpose & Motivation
 
 The internet increasingly suffers from:
@@ -88,7 +106,9 @@ A platform or service that accepts TrustID tokens to verify account authenticity
 
 The complete specification for the TrustID Verified Person & Age Token Protocol (VPAT) is here:
 
-👉 **[`trustid-spec-0.1.md`](./trustid-spec-0.1.md)**
+👉 **[VPAT-SPEC.md](./VPAT-SPEC.md)**  
+Old draft: **[trustid-spec-0.1.md](./trustid-spec-0.1.md)**
+
 
 This document includes:
 - internal IdP identity model  
@@ -98,10 +118,25 @@ This document includes:
 - cryptographic requirements  
 - revocation mechanisms  
 - security & privacy considerations  
-- versioning policy  
 
 ---
 
+# 📁 Reference Examples
+Example payloads, JWTs, and JWKS sets can be found in:
+
+👉 /examples/
+
+This includes:
+
+- issue-request.json  
+- issue-response.json  
+- verify-request.json  
+- verify-response-valid.json  
+- verify-response-revoked.json  
+- sample-token.jwt  
+- sample-jwks.json  
+
+---
 # 🔒 Security Principles
 
 TrustID requires:
@@ -116,21 +151,24 @@ Relying Parties MUST reject:
 - tokens with invalid issuers  
 - unknown signatures  
 
+An example JWKS file is available in /examples/sample-jwks.json
+
 ---
 
 # 🛡 Privacy Principles
 
 TrustID enforces:
 - data minimization  
-- pseudonymity  
+- strong pseudonymity  
 - no sharing of legal identity  
 - GDPR-aligned design  
-- protection against identity correlation between platforms  
+- protection against cross-platform identity correlation  
+- unlinkable subject identifiers (future feature)  
+- platforms cannot reconstruct legal identity even with multiple tokens  
 
 Future versions will include:
 - per-Relying-Party pseudonymous `sub` values  
-- unlinkability-by-design options  
-- verifiable credentials integration  
+- verifiable credentials (W3C VC) integration
 
 ---
 
@@ -163,7 +201,9 @@ Support trust layers for public services while maintaining privacy.
 
 # 🏛 Legal Notice
 
-This repository contains an **open technical standard**, not an implementation.  
+This repository contains an **open technical standard**, not an implementation.
+A reference Laravel/PHP implementation was used during development.
+It is not included in this repository, but selected payload examples are provided in /examples.
 Any system may implement TrustID freely under the conditions of the Apache License 2.0.
 
 All rights to authorship remain with **Vojtěch Sejkora**.
