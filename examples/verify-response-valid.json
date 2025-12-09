@@ -1,0 +1,17 @@
+{
+  "status": "valid",
+  "reason": "Token is cryptographically valid and active.",
+  "claims": {
+    "iss": "https://trustid.example",
+    "sub": "subject-487faa",
+    "age_bracket": "18+",
+    "real_person": true
+  },
+  "context": {
+    "platform": "facebook",
+    "handle": "@john_doe",
+    "real_person": true,
+    "age_bracket": "18+",
+    "device_bound": true
+  }
+}
