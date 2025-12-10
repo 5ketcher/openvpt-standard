@@ -218,10 +218,134 @@ Privacy rules apply.
 
 ---
 
-# 11. Threat Model
+# 11. Trust Level Framework (TLF 1.0)
+
+The Trust Level Framework defines a unified, interoperable, and auditable scale of assurance used across all implementations of the TrustID VPAT Protocol.  
+It provides Relying Parties (RPs) with a predictable and machine-verifiable indicator of the confidence an Identity Provider (IdP) has in the verified identity of a Subject.
+
+Trust Levels represent identity assurance, verification strength, and resistance to impersonation, independent from age bracket or device trust.
+
+Relying Parties MUST evaluate the `trust_level` claim according to this framework.
+
+---
+
+## 11.1 Trust Level Overview
+
+| Trust Level | Name                              | Description                                                                 | Typical Use Cases |
+|-------------|-----------------------------------|-----------------------------------------------------------------------------|--------------------|
+| **0**       | Unverified                        | No identity verification. User is anonymous or pseudonymous without proof. | Guest access, low-risk features. |
+| **1**       | Basic Assurance                   | Low assurance (email, phone). No document verification.                     | Low-risk communities, spam reduction. |
+| **2**       | Medium Assurance                  | Document or automated KYC check with facial matching.                       | Standard social verification, gaming, 13+ checks. |
+| **3**       | High Assurance                    | Equivalent to *eIDAS Substantial*. Biometric liveness + document + MFA.     | Political posting, 18+ content, monetisation. |
+| **4**       | Strong / Government-grade         | Equivalent to *eIDAS High*. National eID, BankID, EUDI Wallet.              | Trusted creators, journalists, high-security services. |
+| **5**       | Critical Assurance (Reserved)     | Reserved for future regulated sectors.                                      | Electronic voting, legal services. |
+
+---
+
+## 11.2 Allowed Trust Level Values
+
+The `trust_level` claim MUST contain an integer **0–4** in VPAT v1.0.  
+Value **5** is reserved and MUST NOT be used until future revisions.
+
+---
+
+## 11.3 Requirements for Each Trust Level
+
+### 11.3.1 Trust Level 0 — Unverified
+IdP MUST ensure:
+- No identity verification was performed.
+- Subject is anonymous.
+- Token MUST NOT assert `real_person = true`.
+
+### 11.3.2 Trust Level 1 — Basic Assurance
+IdP MUST:
+- Perform low-assurance checks (email, phone, weak KYC).
+- Detect duplicate/fraud identities where possible.
+- Assert `real_person = true` ONLY if minimal KYC was performed.
+
+### 11.3.3 Trust Level 2 — Medium Assurance
+IdP MUST:
+- Verify identity using document-based or automated KYC with face match.
+- Perform liveness detection or use equivalent anti-spoofing checks.
+- Ensure one-to-one identity uniqueness.
+- Log verification method and timestamp.
+
+### 11.3.4 Trust Level 3 — High Assurance (eIDAS Substantial)
+IdP MUST:
+- Perform verification at or above *eIDAS Substantial*.
+- Use biometric verification with anti-spoofing.
+- Authenticate user with MFA.
+- Validate identity against authoritative registries.
+- Maintain audit logs and revocation capability.
+
+### 11.3.5 Trust Level 4 — Strong/Government-grade Assurance (eIDAS High)
+IdP MUST:
+- Use a qualified national identity scheme (eIDAS High, BankID, EUDI Wallet).
+- Protect signing keys in an HSM.
+- Confirm identity using government-grade processes.
+- Meet availability and robustness requirements for national identity providers.
+
+### 11.3.6 Trust Level 5 — Critical Assurance (Reserved)
+- Reserved for future versions of VPAT.
+- MUST NOT be issued by any IdP under VPAT v1.0.
+
+---
+
+## 11.4 Mapping to External Standards
+
+| TLF Level | eIDAS LoA     | NIST IAL  | Notes |
+|-----------|----------------|-----------|-------|
+| **TL0**   | —              | IAL0      | No identity verification |
+| **TL1**   | —              | IAL1      | Low confidence |
+| **TL2**   | —              | IAL1/IAL2 | Medium identity confidence |
+| **TL3**   | Substantial    | IAL2      | High identity confidence |
+| **TL4**   | High           | IAL3      | Government-grade identity |
+| **TL5**   | —              | —         | Reserved |
+
+This mapping ensures VPAT remains interoperable with global digital identity frameworks.
+
+---
+
+## 11.5 Relying Party Behavior Based on Trust Level
+
+RPs SHOULD enforce minimum trust levels based on risk:
+
+- **TL0** → no sensitive actions  
+- **TL1** → low-risk posting, non-monetised features  
+- **TL2** → commenting, messaging, platform participation  
+- **TL3** → political posting, 18+ content, monetisation  
+- **TL4** → journalist/creator verification, identity-dependent actions  
+- **TL5** → future high-regulation roles  
+
+RPs MAY impose stricter requirements under their Trust Policy.
+
+---
+
+## 11.6 Misuse and Non-compliance
+
+If an IdP falsely inflates trust levels:
+
+- Relying Parties MUST reject its tokens.
+- The issuer SHOULD be marked non-compliant.
+- The issuer MAY be suspended from TrustID-compatible ecosystems.
+
+Repeated misuse SHOULD result in permanent exclusion.
+
+---
+
+## 11.7 Backward Compatibility
+
+Introducing TLF 1.0 does **not** change any existing VPAT claim fields.  
+Tokens remain backward compatible.
+
+If an RP does not recognize or cannot evaluate `trust_level`, it MUST treat the user as **TL0 (Unverified)**.
+
+---
+
+# 12. Threat Model
 Mitigates botnets, synthetic identities, deepfakes, underage access, etc.
 
-# 11.1 Handling Untrusted or Hostile Issuers
+# 12.1 Handling Untrusted or Hostile Issuers
 
 The VPAT protocol does not restrict which entities may operate as
 Identity Providers (IdPs). This ensures global interoperability.
@@ -238,7 +362,7 @@ The protocol remains neutral while allowing strict governance at deployment time
 
 ---
 
-# 12. Trust Policy Layer (Issuer Governance)
+# 13. Trust Policy Layer (Issuer Governance)
 
 TrustID separates the technical protocol from trust decisions.  
 While the protocol defines how tokens are issued, structured and verified,
@@ -258,7 +382,7 @@ it supports any issuer, but allows RPs to enforce strict governance.
 
 ---
 
-# 13. Policy Profiles
+# 14. Policy Profiles
 
 A Trust Policy may define one or more **Profiles**, representing different
 assurance requirements, legal constraints, or ecosystem rules.
@@ -281,7 +405,7 @@ Relying Parties MUST evaluate this claim according to their configured Trust Pol
 
 ---
 
-# 14. Protocol Flows
+# 15. Protocol Flows
 
 ### Verification Flow:
 User → RP → IdP → RP (token) → IdP (verify)
@@ -291,23 +415,23 @@ RP → /verify-token → IdP
 
 ---
 
-# 15. Interoperability
+# 16. Interoperability
 Compatible with eIDAS2, BankID, national identity systems, FIDO2.
 
 ---
 
-# 16. Reference Implementation  
+# 17. Reference Implementation  
 This repository includes example payloads and flows under /examples/.
 The full Laravel backend implementation is separate.
 
 ---
 
-# 17. Future Extensions
+# 18. Future Extensions
 age_over_21, verified_business_account, COSE tokens, device risk scoring.
 
 ---
 
-# 18. Recommended Data Storage & Handling Guidelines
+# 19. Recommended Data Storage & Handling Guidelines
 
 This section defines the recommended internal data fields, retention
 rules, and handling practices for Identity Providers (IdPs) and Relying
@@ -322,7 +446,7 @@ These recommendations ensure:
 
 ---
 
-## 18.1 Identity Provider (IdP) — Recommended Internal Data Model
+## 19.1 Identity Provider (IdP) — Recommended Internal Data Model
 
 IdPs SHOULD internally maintain the following fields:
 
@@ -344,7 +468,7 @@ Only hashed or derived identifiers SHOULD be kept.
 
 ---
 
-## 18.2 Required Logging by IdPs
+## 19.2 Required Logging by IdPs
 
 IdPs SHOULD maintain secure logs of:
 
@@ -365,7 +489,7 @@ Logs MUST NOT contain:
 
 ---
 
-## 18.3 Relying Party (RP) — Recommended Validation Records
+## 19.3 Relying Party (RP) — Recommended Validation Records
 
 RPs SHOULD store ONLY:
 
@@ -390,7 +514,7 @@ required by law to keep longer.
 
 ---
 
-## 18.4 Required Security Controls for Both IdPs and RPs
+## 19.4 Required Security Controls for Both IdPs and RPs
 
 Both parties MUST:
 
@@ -403,7 +527,7 @@ Both parties MUST:
 
 ---
 
-## 18.5 Data Minimization Principle
+## 19.5 Data Minimization Principle
 
 VPAT is designed to prevent:
 - over-collection,
@@ -417,7 +541,7 @@ Therefore:
 
 ---
 
-## 18.6 Revocation Record Handling
+## 19.6 Revocation Record Handling
 
 IdPs MUST maintain a revocation table containing:
 
@@ -429,7 +553,7 @@ RPs MUST query revocation status on every high-risk action.
 
 ---
 
-## 18.7 Recommended Audit Practices
+## 19.7 Recommended Audit Practices
 
 IdPs SHOULD undergo:
 
@@ -446,9 +570,13 @@ RPs SHOULD:
 
 ---
 
-# 19. Change Log
-v1.1 (2025-12-10): add Recommended Data Storage & Handling Guidelines
-v1.0 (2025-12-09): First full specification.
+# 20. Change Log
+v1.1 (2025-12-10):  
+- Added Recommended Data Storage & Handling Guidelines  
+- Added Trust Level Framework (TLF 1.0)
+                    
+v1.0 (2025-12-09):  
+- First full specification.
 
 ---
 
