@@ -1,0 +1,17 @@
+cff-version: 1.2.0
+title: "TrustID — Verified Person & Age Token Protocol (VPAT)"
+message: "Please cite this work if you use TrustID or reference the VPAT specification."
+authors:
+  - family-names: Sejkora
+    given-names: Vojtěch
+    affiliation: "Author of TrustID Protocol"
+date-released: 2025-12-10
+license: Apache-2.0
+version: "1.0-draft"
+doi: ""
+url: "https://github.com/5ketcher/TrustID-Verified-Person-Age-Token-Protocol-VPAT-"
+abstract: >
+  TrustID is an open, privacy-preserving identity protocol providing
+  cryptographically verifiable proof-of-personhood and age claims
+  without exposing personal data. VPAT defines the token structure,
+  trust model and verification rules for global interoperability.
