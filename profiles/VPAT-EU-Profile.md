@@ -1,8 +1,8 @@
-VPAT-EU-Profile (v1.0 – Draft)
+# VPAT-EU-Profile (v1.0 – Draft)
 
-Status: Proposed Profile for EU-compatible deployments
-Author: Vojtěch Sejkora
-Date: 2025-12-10
+**Status:** Proposed Profile for EU-compatible deployments  
+**Author:** Vojtěch Sejkora  
+**Date:** 2025-12-10  
 
 ---
 
@@ -74,7 +74,7 @@ The IdP MUST:
 
 ---
 
-7. Relying Party Requirements
+# 7. Relying Party Requirements
 
 An RP accepting this profile MUST:
 
@@ -89,6 +89,8 @@ An RP accepting this profile MUST:
 
 This profile is identified by:
 
+```
 policy_profile = "vpat-eu-1.0"
+```
 
 # End of VPAT-EU-Profile
