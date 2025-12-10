@@ -297,6 +297,47 @@ All rights to authorship remain with **Vojtěch Sejkora**.
 
 ---
 
+## TrustID Specification Protection Notice
+
+The TrustID Protocol, including its architecture, token format, claim
+definitions, trust model, security design, and all associated concepts,
+is an original work authored by **Vojtěch Sejkora**.
+
+This repository contains the authoritative version of the TrustID
+Specification (VPAT — Verified Person & Age Token Protocol).
+
+### Rights and Restrictions
+
+- The TrustID specification MAY be implemented freely in any software,
+  commercial or non-commercial, under the terms of the Apache License 2.0.
+
+- The **specification itself**, including its structure, logic, diagrams,
+  terminology, and token format, MAY NOT be copied, modified, republished,
+  forked, or used to create derivative identity standards without
+  explicit written permission from the author.
+
+- The name **"TrustID"**, **"TrustID Protocol"**, and **"VPAT"**
+  MAY NOT be used for:
+    - derivative or competing identity specifications,
+    - alternate versions of the standard,
+    - modified or incompatible forks,
+  without explicit written permission from the author.
+
+- Implementations MAY state that they are
+  **"TrustID-compliant"** or **"TrustID-compatible"**
+  only if they follow the official specification contained in this repository.
+
+### Purpose of this Notice
+
+This notice protects the integrity of the TrustID standard and ensures that
+the protocol evolves under transparent and consistent governance, while still
+remaining fully open for adoption by platforms, companies, and public institutions.
+
+Authorship, conceptual design, and the protocol architecture remain the
+intellectual work of **Vojtěch Sejkora (2025)**.
+
+---
+
 # 📜 License
 
 This project is licensed under the **Apache License 2.0**, which:
