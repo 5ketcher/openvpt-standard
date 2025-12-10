@@ -131,7 +131,7 @@ Internal structure example:
 # 5. Token Format
 
 ## Standard Claims
-iss, sub, iat, exp, jti.
+iss, sub, iat, exp, jti, policy_profile.
 
 ## TrustID Claims
 real_person, age_bracket, age_13_plus, age_18_plus, trust_level, loa.
@@ -141,6 +141,22 @@ subject_type, platform, handle, profile_url.
 
 ## Device Claims
 device_certified, device_type.
+
+Device claims are OPTIONAL and MAY be omitted entirely if the deployment does not require device binding.
+
+## Issuer Metadata Claims (Required)
+
+To enable governance and trust policy enforcement, all VPAT proof tokens
+MUST include the following issuer metadata claims:
+
+- `issuer` — URL identifying the issuing IdP  
+- `issuer_country` — ISO-3166 country code  
+- `issuer_type` — e.g., "government", "bank", "mobile_operator", "kyc_provider"  
+- `assurance_level` — e.g., "low", "substantial", "high", or eIDAS-aligned values  
+- `policy_profile` — identifier of the profile used for this issuance
+
+These claims allow Relying Parties to perform trust decisions independently
+of the core cryptographic validation.
 
 ---
 
@@ -161,10 +177,15 @@ Public keys.
 Short-lived (5 minutes).  
 Proof tokens up to 1 year.
 
+Relying Parties SHOULD reject proof tokens with an expiration longer than 365 days.
+
 ---
 
 # 8. Revocation Model  
 revoked, expired, device_revoked.
+
+If an issuer becomes suspended or untrusted according to a Trust Policy,
+Relying Parties MUST treat all its tokens as invalid regardless of signature validity.
 
 ---
 
@@ -172,6 +193,8 @@ revoked, expired, device_revoked.
 
 IdP must rotate keys, secure private keys, enforce TLS.  
 RP must validate signature & expiration.
+Relying Parties MUST validate issuer metadata against their configured Trust Policy.
+Tokens from untrusted or unapproved issuers MUST be rejected or downgraded.
 
 Privacy rules apply.
 
@@ -180,9 +203,67 @@ Privacy rules apply.
 # 10. Threat Model
 Mitigates botnets, synthetic identities, deepfakes, underage access, etc.
 
+# 10.1 Handling Untrusted or Hostile Issuers
+
+The VPAT protocol does not restrict which entities may operate as
+Identity Providers (IdPs). This ensures global interoperability.
+
+However, some issuers may lack transparency, fail audits, or attempt to
+issue synthetic or fraudulent identities.
+
+VPAT mitigates this by requiring issuer metadata within each token.
+Relying Parties MUST apply their own Trust Policy to determine which issuers
+are acceptable for specific use cases or regulatory environments.
+
+The protocol remains neutral while allowing strict governance at deployment time.
+
+
 ---
 
-# 11. Protocol Flows
+# 11. Trust Policy Layer (Issuer Governance)
+
+TrustID separates the technical protocol from trust decisions.  
+While the protocol defines how tokens are issued, structured and verified,
+it does **not** specify which Identity Providers (IdPs) should be trusted.
+
+Trust decisions are governed by a **Trust Policy**, defined by each platform,
+region, or regulatory ecosystem. A Trust Policy determines:
+
+- which IdPs are accepted by the Relying Party (RP),
+- which countries or trust schemes qualify,
+- required Levels of Assurance (LoA),
+- whether additional rules apply for high-risk actions (e.g., political advertising),
+- how issuers are audited, onboarded, suspended, or removed.
+
+VPAT remains a **neutral protocol**:  
+it supports any issuer, but allows RPs to enforce strict governance.
+
+---
+
+# 12. Policy Profiles
+
+A Trust Policy may define one or more **Profiles**, representing different
+assurance requirements, legal constraints, or ecosystem rules.
+
+A Profile defines:
+- acceptable IdP types,
+- minimum assurance levels,
+- expected verification methods,
+- allowed or disallowed token claims,
+- retention and audit expectations.
+
+Examples:
+- `vpat-eu-1.0` — EU-focused profile aligned with eIDAS and regulated KYC providers  
+- `vpat-global-0.1` — minimal global interoperability profile  
+- `vpat-sandbox` — unrestricted profile for development/testing
+
+The token MUST contain a `policy_profile` claim indicating the profile
+under which the IdP issued the token.
+Relying Parties MUST evaluate this claim according to their configured Trust Policy.
+
+---
+
+# 13. Protocol Flows
 
 ### Verification Flow:
 User → RP → IdP → RP (token) → IdP (verify)
@@ -192,23 +273,27 @@ RP → /verify-token → IdP
 
 ---
 
-# 12. Interoperability
+# 14. Interoperability
 Compatible with eIDAS2, BankID, national identity systems, FIDO2.
 
 ---
 
-# 13. Reference Implementation  
+# 15. Reference Implementation  
 This repository includes example payloads and flows under /examples/.
 The full Laravel backend implementation is separate.
 
 ---
 
-# 14. Future Extensions
+# 16. Future Extensions
 age_over_21, verified_business_account, COSE tokens, device risk scoring.
 
 ---
 
-# 15. Change Log
+# 17. Change Log
+v1.0.1 (2025-12-10): Added Trust Policy Layer section, Policy Profiles,
+issuer metadata requirements, improved security requirements, and clarified
+device claim rules. No breaking changes to protocol structure.
+
 v1.0 (2025-12-09): First full specification.
 
 ---
