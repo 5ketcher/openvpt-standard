@@ -307,8 +307,147 @@ age_over_21, verified_business_account, COSE tokens, device risk scoring.
 
 ---
 
-# 18. Change Log
+# 18. Recommended Data Storage & Handling Guidelines
 
+This section defines the recommended internal data fields, retention
+rules, and handling practices for Identity Providers (IdPs) and Relying
+Parties (RPs) implementing the TrustID VPAT protocol.
+
+These recommendations ensure:
+- privacy preservation,
+- auditability,
+- regulatory compliance (including GDPR and eIDAS),
+- operational integrity,
+- resistance against fraud, botnets, and synthetic identities.
+
+---
+
+## 18.1 Identity Provider (IdP) — Recommended Internal Data Model
+
+IdPs SHOULD internally maintain the following fields:
+
+- `sub` — stable pseudonymous subject identifier  
+- `legal_identity_hash` — a salted hash of strong identity attributes  
+- `age_bracket` — e.g., "13+", "15+", "18+", "21+"  
+- `loa` — level of assurance  
+- `trust_level` — integer (0–5)  
+- `real_person` — boolean  
+- `verified_at` — timestamp of last verified identity event  
+- `verification_method` — e.g., "eIDAS-high", "bank", "wallet"  
+- `revocation_status` — active, revoked, compromised  
+- `device_binding` (optional) — registered trusted devices  
+- `audit_log_id` — pointer to audit trail  
+
+Personally identifiable information (PII), such as name, birthdate, ID
+numbers, or address, MUST NOT be stored in reversible form.  
+Only hashed or derived identifiers SHOULD be kept.
+
+---
+
+## 18.2 Required Logging by IdPs
+
+IdPs SHOULD maintain secure logs of:
+
+- identity verification events  
+- token issuance events  
+- token revocation events  
+- key rotation events  
+- fraud or anomaly detection alerts  
+- access to administrative APIs  
+
+Logs MUST include timestamps and MUST be tamper-evident or stored in an
+append-only format.
+
+Logs MUST NOT contain:
+- JWT contents,  
+- personal identity data,  
+- unnecessary user metadata.
+
+---
+
+## 18.3 Relying Party (RP) — Recommended Validation Records
+
+RPs SHOULD store ONLY:
+
+- the VPAT token (for short-term replay protection),  
+- `sub` pseudonymous identifier,  
+- `issuer`,  
+- `assurance_level`,  
+- `policy_profile`,  
+- token `jti` (for duplicate detection),  
+- timestamp of validation,  
+- decision outcome (accepted / rejected / downgraded).
+
+RPs MUST NOT store:
+
+- name, birthdate, ID numbers, or any PII,  
+- full JWT contents beyond validation window,  
+- historical location or behavioral data tied to the token.
+
+Recommended maximum retention for tokens: **7–30 days**.  
+Recommended maximum retention for validation logs: **1 year**, unless
+required by law to keep longer.
+
+---
+
+## 18.4 Required Security Controls for Both IdPs and RPs
+
+Both parties MUST:
+
+- store signing/private keys in HSM or equivalent protection  
+- enforce TLS for all VPAT API communication  
+- implement rate limiting to prevent enumeration  
+- implement monitoring for abnormal validation / issuance patterns  
+- provide a clear breach notification procedure  
+- isolate VPAT token validation from high-risk backend systems  
+
+---
+
+## 18.5 Data Minimization Principle
+
+VPAT is designed to prevent:
+- over-collection,
+- cross-platform identity correlation,
+- long-term identity tracking.
+
+Therefore:
+
+- IdPs SHOULD store the minimal internal identity attributes required for LoA.  
+- RPs SHOULD NOT store VPAT tokens beyond what is required for transaction integrity.  
+
+---
+
+## 18.6 Revocation Record Handling
+
+IdPs MUST maintain a revocation table containing:
+
+- `jti` identifiers of revoked tokens  
+- reason for revocation (compromised, fraud, user request, issuer policy)  
+- timestamp of revocation  
+
+RPs MUST query revocation status on every high-risk action.
+
+---
+
+## 18.7 Recommended Audit Practices
+
+IdPs SHOULD undergo:
+
+- annual cryptographic key audits  
+- annual identity assurance audits  
+- automated anomaly detection  
+- external penetration testing (recommended)  
+
+RPs SHOULD:
+
+- test validation logic  
+- log invalid token attempts  
+- notify IdPs of suspected compromised accounts  
+
+---
+
+# 19. Change Log
+v1.1 (2025-12-10): add Recommended Data Storage & Handling Guidelines
 v1.0 (2025-12-09): First full specification.
 
 ---
