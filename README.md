@@ -378,6 +378,7 @@ Planned future enhancements of the TrustID standard:
 # 📬 Contact
 
 Email: sejkora@trynt.cz
+Web: vpat.dev
 
 ---
 
