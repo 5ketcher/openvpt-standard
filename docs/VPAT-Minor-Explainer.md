@@ -1,8 +1,8 @@
-# VPAT Minor Standard 1.0 — Explainer (Non‑Normative)
+# OpenVPT Minor Standard 1.0 — Explainer (Non‑Normative)
 Privacy‑Preserving Age Verification for Minors
 
 **Status:** Informative / Non‑Normative Explainer  
-**Applies to:** VPAT Minor Standard 1.0 (Experimental Policy Profile)  
+**Applies to:** OpenVPT Minor Standard 1.0 (Experimental Policy Profile)  
 **Author:** Vojtěch Sejkora  
 **Date:** 2025-12-12  
 
@@ -15,7 +15,7 @@ Platforms need a way to enforce age gates (e.g., **13+ / 15+ / 18+**) without fo
 - create permanent “child identities”,
 - or become trackable across the internet.
 
-**VPAT Minor Standard** provides a way for a platform to learn only this:
+The **OpenVPT Minor Standard** provides a way for a platform to learn only this:
 
 > “This user is old enough for the feature / service.”
 
@@ -23,11 +23,11 @@ Platforms need a way to enforce age gates (e.g., **13+ / 15+ / 18+**) without fo
 
 ---
 
-## 2. What VPAT Minor is (and is not)
+## 2. What OpenVPT Minor is (and is not)
 
 ### It *is*
 - **Age category verification** (e.g., `13+`).
-- A **privacy‑first profile** of TrustID VPAT.
+- A **privacy‑first profile** of the OpenVPT standard.
 - Designed to minimize data and linkability.
 
 ### It is *not*
@@ -55,11 +55,11 @@ Key rule: AAA returns only:
 - **assurance** (how strong the check is),
 - **validity** (how long it remains acceptable).
 
-AAA **never issues VPAT tokens**.
+AAA **never issues OpenVPT or VPT tokens**.
 
-### VPAT Issuer (IdP)
-Issues the VPAT token using the AAA’s attestation.  
-Key rule: Issuer stores **no personal data about the child** and relies on the attestation result only.
+### VPT Issuer (Identity Provider)
+Issues the **Verified Person & Age Token (VPT)** using the AAA’s attestation.  
+Key rule: the Issuer stores **no personal data about the child** and relies on the attestation result only.
 
 ### Relying Party (RP)
 The platform/service that consumes the token.  
@@ -92,7 +92,7 @@ Issuers and platforms store the minimum required and delete after expiry + grace
 ## 5. How the flow works (a story)
 
 1. A child starts an age verification on a platform (RP).
-2. The platform redirects the child to a VPAT Issuer.
+2. The platform redirects the child to a VPT Issuer.
 3. The Issuer generates a **local pseudonym/handle** (random) and stores it only on the device.
 4. The guardian authorizes age attestation using a regulated authority (AAA).
 5. AAA checks eligibility and returns only:
@@ -100,7 +100,7 @@ Issuers and platforms store the minimum required and delete after expiry + grace
    - assurance (e.g., high)
    - validity (e.g., 6 months)
 6. Issuer records only the attestation result (minimal).
-7. Issuer issues a short‑lived VPAT token for the platform (minutes).
+7. Issuer issues a short‑lived VPT token for the platform (minutes).
 8. Platform validates the token and applies its policy (allow / restrict / deny).
 
 ---
@@ -113,13 +113,13 @@ A platform can safely implement policies such as:
 - Apply different moderation or amplification rules for minor accounts.
 - Require stronger assurance (`assurance_level = high`) for sensitive features.
 
-**Important:** VPAT Minor does not tell a platform what to do — it enables policy without tracking.
+**Important:** OpenVPT Minor does not tell a platform what to do — it enables policy without tracking.
 
 ---
 
 ## 7. Abuse prevention (how this makes attacks harder)
 
-VPAT Minor does not “solve” all propaganda or bot issues — but it makes *mass abuse* harder by raising the cost:
+OpenVPT Minor does not “solve” all propaganda or bot issues — but it makes *mass abuse* harder by raising the cost:
 
 - To create large numbers of “minor‑eligible” accounts, an attacker would need repeated guardian‑authorized attestations from regulated authorities.
 - Tokens are short‑lived; attestations should be time‑limited.
@@ -132,7 +132,7 @@ This shifts abuse from “cheap and scalable” to “expensive and hard to scal
 
 ## 8. “Signal weighting” vs “truth scoring”
 
-VPAT Minor is **not** a mechanism to label content as “true/false”.  
+OpenVPT Minor is **not** a mechanism to label content as “true/false”.  
 Instead, it supports **signal weighting**:
 
 > “This interaction comes from a minor‑eligible account with a certain assurance.”
@@ -164,14 +164,14 @@ Platforms may choose to limit amplification or sensitive actions — not because
 
 ---
 
-## 11. Where this fits in TrustID VPAT
+## 11. Where this fits in OpenVPT
 
-- Core VPAT defines token and assurance mechanics.
-- **VPAT Minor** is a constrained profile focused on minors, where privacy dominates.
-- Additional profiles may exist (e.g., adult accounts with recovery).
+- OpenVPT Core defines token and assurance mechanics.
+- **OpenVPT Minor** is a constrained profile focused on minors, where privacy dominates.
+- Additional profiles may exist (e.g., adult profiles with recovery).
 
 ---
 
 ## 12. One‑sentence summary
 
-**VPAT Minor Standard enables platforms to enforce age gates without creating child identities or tracking children across the internet.**
+**OpenVPT Minor Standard enables platforms to enforce age gates without creating child identities or tracking children across the internet.**
