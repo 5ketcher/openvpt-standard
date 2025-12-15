@@ -1,18 +1,23 @@
-# TrustID — Open Standard for Verified Human & Age Tokens (VPAT)
+# OpenVPT — Open Verified Person & Age Token Standard
 
 **Author:** Vojtěch Sejkora  
-**Status:** Experimental Open Standard  
-**Current Specification:** VPAT 1.1 Draft  
+**Status:** Public Working Draft  
+**Current Specification:** OpenVPT Core 1.1 (Draft)  
 **License:** Apache License 2.0  
+
+> Note: This project was previously published under a different working name.
+> It has been renamed to **OpenVPT** for clarity and trademark safety.
 
 ---
 
 # 📌 Overview
 
-**TrustID** is an open, privacy-preserving protocol that allows online platforms to verify that an account belongs to a **real human being**, and optionally that the user is **above a required age threshold** (13+, 15+, 18+, 21+).
+**OpenVPT** (Open Verified Person Token) is an open, privacy-preserving standard that enables online platforms to verify that an account belongs to a **real human being**, and optionally that the user belongs to a required **age group** (13+, 15+, 18+, 21+) — **without revealing identity data**.
 
-TrustID provides **cryptographically signed proof tokens** issued by trusted Identity Providers (IdPs).  
-These tokens contain *minimal claims only*, such as:
+OpenVPT defines the **Verified Person & Age Token (VPT)**:  
+a cryptographically signed proof issued by trusted Identity Providers (IdPs).
+
+Example minimal claims:
 
 ```json
 {
@@ -24,14 +29,15 @@ These tokens contain *minimal claims only*, such as:
 
 No personal identity information is ever shared with platforms:
 - no name  
-- no birthdate  
+- no date of birth  
 - no address  
-- no national ID  
+- no national identifier  
 - no document numbers  
 
-TrustID is designed to strengthen digital trust while preserving individual privacy.
+OpenVPT strengthens digital trust while preserving individual privacy.
 
-TrustID is a neutral protocol: trust decisions and accepted issuers are always determined by each platform's or region's Trust Policy.
+OpenVPT is a **neutral protocol standard**:  
+trust decisions and accepted issuers are determined by each platform’s or region’s **Trust Policy**, not by the protocol itself.
 
 ---
 
@@ -39,7 +45,8 @@ TrustID is a neutral protocol: trust decisions and accepted issuers are always d
 
 | Abbreviation | Meaning |
 |--------------|---------|
-| VPAT | Verified Person & Age Token |
+| OpenVPT | Open Verified Person Token |
+| VPT | Verified Person & Age Token |
 | IdP | Identity Provider |
 | RP | Relying Party |
 | JWT | JSON Web Token |
@@ -47,12 +54,13 @@ TrustID is a neutral protocol: trust decisions and accepted issuers are always d
 | JOSE | JSON Object Signing & Encryption |
 | KID | Key Identifier |
 | JTI | Token Identifier |
-| LOA | Level of Assurance |
+| LoA | Level of Assurance |
 | eIDAS | EU Digital Identity Framework |
 | PII | Personally Identifiable Information |
 | HSM | Hardware Security Module |
 
 ---
+
 # 🎯 Purpose & Motivation
 
 The internet increasingly suffers from:
@@ -62,16 +70,16 @@ The internet increasingly suffers from:
 - underage access to restricted services  
 - mass spam and coordinated manipulation  
 
-Existing verification methods often require:
+Existing verification approaches often require:
 - uploading sensitive documents  
-- revealing personal identity  
-- trusting unregulated services with private data  
+- revealing legal identity  
+- trusting centralized, opaque verification vendors  
 
-**TrustID solves this by defining a standardized, minimal, cryptographically verifiable token** that proves only what is necessary:
+**OpenVPT addresses this by defining a standardized, minimal, cryptographically verifiable token** that proves only what is necessary:
 
-- "This is a real human."  
-- "This user is at least 18 years old."  
-- "This identity was verified using a high-assurance method."
+- “This is a real, verified human.”  
+- “This user belongs to the 18+ age group.”  
+- “This verification meets a defined assurance level.”  
 
 Nothing more.
 
@@ -79,97 +87,107 @@ Nothing more.
 
 # 🧩 Core Features
 
-- ✔ **Privacy-first identity verification**  
+- ✔ **Privacy-first verification model**  
 - ✔ **Boolean and bracket-style age claims** (13+, 15+, 18+, 21+)  
 - ✔ **Cryptographically verifiable JWT-based tokens**  
-- ✔ **No personal identity exposure**  
-- ✔ **Compatible with eIDAS 2.0 & national eID systems**  
-- ✔ **Lightweight and easy to integrate for platforms**  
-- ✔ **Revocation and trust-level model**  
+- ✔ **No personal identity exposure to platforms**  
+- ✔ **Compatible with eIDAS 2.0 and national eID systems**  
+- ✔ **Lightweight validation for large platforms**  
+- ✔ **Trust-level and revocation support**  
 
 ---
 
 # 🏗 Architecture Summary
 
-TrustID defines three ecosystem roles:
+OpenVPT defines three core ecosystem roles:
 
 ### 1. Identity Provider (IdP)
-Verifies the subject using approved identity methods and issues signed tokens.
+Verifies the subject using approved identity methods and issues signed VPT tokens.
 
 ### 2. Subject (User)
-A natural person who wishes to prove that they are a verified human.
+A natural person who wishes to prove verified personhood or age group.
 
 ### 3. Relying Party (RP)
-A platform or service that accepts TrustID tokens to verify account authenticity.
+A platform or service that validates OpenVPT tokens for access control or policy enforcement.
 
 ---
 
 # 🌐 Trust Policy Layer & Global Deployment
 
-TrustID separates the technical protocol from trust decisions.
+OpenVPT **separates the technical protocol from trust decisions**.
 
-The protocol defines how tokens are issued, structured and verified.
-However, TrustID does **not** determine which issuers or countries are
-trusted. This is handled by a **Trust Policy Layer**, which each platform,
-region or regulatory ecosystem may define independently.
+The protocol defines:
+- token structure,
+- required claims,
+- cryptographic requirements,
+- validation rules.
 
-A Trust Policy specifies:
-- which Identity Providers (IdPs) are accepted,
-- which countries or trust schemes qualify,
-- required Levels of Assurance (LoA),
-- rules for high-risk features (e.g. political advertising, monetisation),
-- how issuers are audited, onboarded, suspended or removed.
+OpenVPT deliberately does **not** mandate:
+- which issuers are trusted,
+- which countries qualify,
+- which assurance levels are sufficient.
 
-This keeps VPAT globally neutral while enabling strict governance where required.
+These decisions are handled by a **Trust Policy Layer**, defined independently by:
+- platforms,
+- regions,
+- regulators,
+- industry alliances.
+
+A Trust Policy may specify:
+- accepted Identity Providers,
+- required Levels of Assurance,
+- rules for high-risk features (e.g. political ads, monetization),
+- issuer auditing and suspension criteria.
+
+This design keeps OpenVPT globally neutral while enabling strict local governance.
 
 ---
 
 # 🧩 Policy Profiles
 
-Trust Policies may define standardized **Profiles**, representing
-different assurance and governance requirements.
+Trust Policies may define standardized **Policy Profiles**, representing
+different governance and assurance requirements.
 
 Examples:
-- `vpat-eu-1.0` — EU profile based on eIDAS and regulated KYC providers
-- `vpat-global-0.1` — minimal worldwide interoperability profile
-- `vpat-sandbox` — development/testing profile
+- `openvpt-eu-1.0` — EU profile aligned with eIDAS 2.0 and regulated KYC providers
+- `openvpt-global-0.1` — minimal global interoperability profile
+- `openvpt-sandbox` — development and testing profile
 
 Tokens include a `policy_profile` claim so Relying Parties can apply
-rules appropriate to their jurisdiction or risk model.
+appropriate rules for their jurisdiction or risk model.
 
-A reference EU profile will be available in:
-👉 /profiles/VPAT-EU-Profile.md
+A reference EU profile is available at:
+👉 `/profiles/OpenVPT-EU-Profile.md`
 
 ---
 
 # 📘 Specification
 
-The complete specification for the TrustID Verified Person & Age Token Protocol (VPAT) is here:
+The complete OpenVPT specification is defined in:
 
-👉 **[VPAT-SPEC.md](./VPAT-SPEC.md)**  
-Old draft: **[trustid-spec-0.1.md](./trustid-spec-0.1.md)**
+👉 **[OPENVPT-SPEC.md](./OPENVPT-SPEC.md)**  
+Legacy draft (historical): **[vpat-spec-0.1.md](./vpat-spec-0.1.md)**
 
-
-This document includes:
-- internal IdP identity model  
+The specification covers:
+- identity verification assumptions  
 - exact token structure  
-- all required and optional claims  
+- mandatory and optional claims  
 - example tokens  
 - cryptographic requirements  
 - revocation mechanisms  
-- security & privacy considerations  
-- trust policy & profile definitions  
-- issuer metadata requirements. 
+- security and privacy considerations  
+- trust policy and profile definitions  
+- issuer metadata requirements  
 
 ---
 
 # 📁 Reference Examples
-Example payloads, JWTs, and JWKS sets can be found in:
 
-👉 /examples/
+Example payloads, tokens, and key sets are provided in:
 
-This includes:
+👉 `/examples/`
 
+Including:
 - issue-request.json  
 - issue-response.json  
 - verify-request.json  
@@ -180,174 +198,75 @@ This includes:
 
 ---
 
-# 🛡 Handling Unknown, Untrusted, or Hostile Issuers
+# 🛡 Handling Unknown or Untrusted Issuers
 
-TrustID assumes a realistic threat model: some issuers may lack
-transparency, proper auditing, or governance, and may attempt to issue
-synthetic or non-verifiable identities.
+OpenVPT assumes a realistic threat model.
 
-The protocol does **not** block such issuers at the technical level.
-Instead, every VPAT token contains mandatory issuer metadata:
-
+Every VPT token includes mandatory issuer metadata:
 - `issuer`
 - `issuer_country`
 - `issuer_type`
 - `assurance_level`
 - `policy_profile`
 
-This enables platforms to:
-- whitelist approved issuers,
-- reject or downgrade untrusted issuers,
-- enforce stricter rules for high-risk features,
-- selectively apply local/regional trust policies.
-
-Trust decisions remain separate from the core protocol.
+This enables platforms to whitelist, downgrade, or reject issuers
+according to their Trust Policy.
 
 ---
 
 # 🔒 Security Principles
 
-TrustID requires:
-- strong cryptographic signing (RS256/ES256 or stronger)  
-- properly rotated public keys via JWKS  
-- avoidance of personal data in tokens  
-- token expirations and revocation lists  
-
-Relying Parties MUST reject:
-- expired tokens  
-- tampered tokens  
-- tokens with invalid issuers  
-- unknown signatures  
-
-An example JWKS file is available in /examples/sample-jwks.json
-
-Platforms MUST validate issuer metadata according to their configured Trust Policy.
+OpenVPT requires:
+- strong cryptographic signing (RS256 / ES256 or stronger),
+- key rotation via JWKS,
+- short token lifetimes,
+- revocation support,
+- strict validation by Relying Parties.
 
 ---
 
 # 🛡 Privacy Principles
 
-TrustID enforces:
-- data minimization  
-- strong pseudonymity  
-- no sharing of legal identity  
-- GDPR-aligned design  
-- protection against cross-platform identity correlation  
-- unlinkable subject identifiers (future feature)  
-- platforms cannot reconstruct legal identity even with multiple tokens  
-
-Future versions will include:
-- per-Relying-Party pseudonymous `sub` values  
-- verifiable credentials (W3C VC) integration
+OpenVPT enforces:
+- data minimization by design,
+- strong pseudonymity,
+- no exposure of legal identity,
+- GDPR-aligned architecture,
+- protection against cross-platform correlation.
 
 ---
 
 # 🌍 Target Use Cases
 
-TrustID is suitable for platforms such as:
-
-### Social Networks  
-Reduce bot activity and label verified humans.
-
-### Messaging Services  
-Prevent anonymous abuse while protecting identity.
-
-### Gaming & Online Communities  
-Age-gate restricted content without storing identity documents.
-
-### Payment Services  
-Require real-person verification without storing sensitive data.
-
-### Dating Apps  
-Prevent synthetic profiles safely and securely.
-
-### Adult Content Platforms  
-Legally verify `18+` without exposing personal identity.
-
-### Government & Civic Tech  
-Support trust layers for public services while maintaining privacy.
+- Social networks
+- Messaging platforms
+- Gaming communities
+- Marketplaces and payment services
+- Dating apps
+- Adult content platforms
+- Civic and public services
 
 ---
 
-# 🏛 Governance & Future Expansion
+# 🏛 Governance & Evolution
 
-TrustID may be extended by governance bodies, industry alliances or
-public institutions.
-
-Governance areas include:
-- defining Trust Policies and Profiles,
-- approving or suspending Identity Providers,
-- maintaining trust registries,
-- specifying minimal Levels of Assurance,
-- coordinating audits and transparency requirements.
-
-The core protocol remains stable while allowing new profiles,
-cryptographic methods, assurance indicators and ecosystem rules to evolve.
+OpenVPT is designed to evolve under transparent governance,
+while keeping the core protocol stable.
 
 ---
 
 # 🏛 Legal Notice
 
-This repository contains an **open technical standard**, not an implementation.
-A reference Laravel/PHP implementation was used during development.
-It is not included in this repository, but selected payload examples are provided in /examples.
-Any system may implement TrustID freely under the conditions of the Apache License 2.0.
+This repository contains an **open technical standard**, not a product or service.
+Reference implementations may exist independently.
 
-All rights to authorship remain with **Vojtěch Sejkora**.
-
----
-
-## TrustID Specification Protection Notice
-
-The TrustID Protocol, including its architecture, token format, claim
-definitions, trust model, security design, and all associated concepts,
-is an original work authored by **Vojtěch Sejkora**.
-
-This repository contains the authoritative version of the TrustID
-Specification (VPAT — Verified Person & Age Token Protocol).
-
-### Rights and Restrictions
-
-- The TrustID specification MAY be implemented freely in any software,
-  commercial or non-commercial, under the terms of the Apache License 2.0.
-
-- The **specification itself**, including its structure, logic, diagrams,
-  terminology, and token format, MAY NOT be copied, modified, republished,
-  forked, or used to create derivative identity standards without
-  explicit written permission from the author.
-
-- The name **"TrustID"**, **"TrustID Protocol"**, and **"VPAT"**
-  MAY NOT be used for:
-    - derivative or competing identity specifications,
-    - alternate versions of the standard,
-    - modified or incompatible forks,
-  without explicit written permission from the author.
-
-- Implementations MAY state that they are
-  **"TrustID-compliant"** or **"TrustID-compatible"**
-  only if they follow the official specification contained in this repository.
-
-### Purpose of this Notice
-
-This notice protects the integrity of the TrustID standard and ensures that
-the protocol evolves under transparent and consistent governance, while still
-remaining fully open for adoption by platforms, companies, and public institutions.
-
-Authorship, conceptual design, and the protocol architecture remain the
-intellectual work of **Vojtěch Sejkora (2025)**.
+Authorship and original design are credited to **Vojtěch Sejkora**.
 
 ---
 
 # 📜 License
 
-This project is licensed under the **Apache License 2.0**, which:
-
-- allows free use and implementation,  
-- requires attribution to the original author,  
-- provides patent protection,  
-- prevents removal of author credit.  
-
-Full license text: https://www.apache.org/licenses/LICENSE-2.0
+Licensed under the **Apache License 2.0**.
 
 ---
 
@@ -356,29 +275,24 @@ Full license text: https://www.apache.org/licenses/LICENSE-2.0
 **Vojtěch Sejkora**  
 Czech Republic, 2025  
 
-Creator of the TrustID protocol and author of the associated specification.
-
 ---
 
 # 🚀 Roadmap
 
-Planned future enhancements of the TrustID standard:
-
-- OAuth-like issuance flow (TrustID Connect)  
-- COSE/CBOR mobile-friendly token format  
-- hardware-keystore-based signing  
-- decentralized multi-IdP federation  
-- advanced trust scoring algorithms  
-- verification for non-human entities (AI agents with operator identity)  
-- per-RP pseudonymous subject identifiers  
-- verifiable credential (W3C VC) mappings  
+- OAuth-like issuance flow (OpenVPT Connect)
+- COSE / CBOR encoding
+- hardware-backed signing
+- decentralized multi-IdP federation
+- advanced trust-level signalling
+- optional W3C VC compatibility
+- non-human subject extensions
 
 ---
 
 # 📬 Contact
 
-Email: sejkora@trynt.cz
-Web: vpat.dev
+Email: sejkora@trynt.cz  
+Web: https://openvtp.dev  
 
 ---
 
