@@ -1,12 +1,20 @@
 {
+  "issuer": "https://openvpt.example",
+  "policy_profiles": [
+    "openvpt-global-1.0",
+    "openvpt-eu-1.0"
+  ],
   "keys": [
     {
       "kty": "RSA",
-      "kid": "2025-01-main",
+      "kid": "openvpt-2025-01",
       "alg": "RS256",
       "use": "sig",
       "n": "w92jd9...base64url...",
-      "e": "AQAB"
+      "e": "AQAB",
+      "status": "active",
+      "created_at": "2025-01-01",
+      "not_before": "2025-01-01"
     }
   ]
 }
