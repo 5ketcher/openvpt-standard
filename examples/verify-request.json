@@ -1,3 +1,8 @@
 {
-  "token": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjIwMjUtMDEifQ..."
+  "token": "eyJhbGciOiJSUzI1NiIsImtpZCI6Im9wZW52cHQtMjAyNS0wMSIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwczovL29wZW52cHQuZXhhbXBsZSIsInN1YiI6InN1YmplY3QtNDg3ZmFhIiwiYXVkIjoiaHR0cHM6Ly9mYWNlYm9vay5jb20iLCJqdGkiOiJhYTIyZmZkIiwiaWF0IjoxNzMzNzQxMDAwLCJleHAiOjE3MzM3NDEzMDAsInBvbGljeV9wcm9maWxlIjoib3BlbnZwdC1nbG9iYWwtMS4wIiwicmVhbF9wZXJzb24iOnRydWUsImFnZV9icmFja2V0IjoiMTgrIiwiYWdlXzEzX3BsdXMiOnRydWUsImFnZV8xOF9wbHVzIjp0cnVlLCJ0cnVzdF9sZXZlbCI6MywiYXNzdXJhbmNlX2xldmVsIjoic3Vic3RhbnRpYWwiLCJzdWJqZWN0X3R5cGUiOiJzb2NpYWxfYWNjb3VudCIsInBsYXRmb3JtIjoiZmFjZWJvb2siLCJoYW5kbGUiOiJAam9obl9kb2UiLCJkZXZpY2VfY2VydGlmaWVkIjp0cnVlLCJkZXZpY2VfdHlwZSI6ImFuZHJvaWQifQ.SIGNED_SIGNATURE",
+  "expected": {
+    "issuer": "https://openvpt.example",
+    "audience": "https://facebook.com",
+    "policy_profile": "openvpt-global-1.0"
+  }
 }
