@@ -1,8 +1,8 @@
-# OpenVPT — Open Verified Person & Age Token Standard
+# OpenVPT (Open Verified Person & Age Token)
 
 **Author:** Vojtěch Sejkora  
-**Status:** Public Working Draft  
-**Current Specification:** OpenVPT Core 1.1 (Draft)  
+**Status:** Public Documentation  
+**Current Specification:** OpenVPT Core 1.1  
 **License:** Apache License 2.0  
 
 > Note: This project was previously published under a different working name.
@@ -292,7 +292,7 @@ Czech Republic, 2025
 # 📬 Contact
 
 Email: sejkora@trynt.cz  
-Web: https://openvtp.dev  
+Web: https://openvpt.dev  
 
 ---
 
